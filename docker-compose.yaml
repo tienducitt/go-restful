@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    volumes:
+      - ~/volumns/go-restful:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: my_db
+
+  go-restful:
+    build: src/.
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=123
+      - DB_NAME=my_db
+    ports:
+      - 8080:8080
+    command: sh -c "sleep 5; ./go-restful migrate; ./go-restful start"

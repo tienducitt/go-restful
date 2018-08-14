@@ -1,0 +1,11 @@
+package: github.com/tienducitt/go-restful/src
+import:
+- package: github.com/gorilla/mux
+  version: ^1.6.2
+- package: github.com/jinzhu/gorm
+  version: ^1.9.1
+  subpackages:
+  - dialects/mysql
+- package: github.com/tienducitt/goconf
+- package: github.com/urfave/cli
+  version: ^1.20.0

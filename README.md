@@ -1,0 +1,1 @@
+# My base golang project for building RESTful service
