@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -15,8 +16,9 @@ type Handler func(r *http.Request) Response
 func MakeHandler(h Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		resp := h(r)
-		resp.WriteBody(w)
+		log.Printf("Header: %v", w)
 		resp.WriteHeader(w)
+		resp.WriteBody(w)
 	}
 }
 
@@ -26,13 +28,13 @@ type JsonReponse struct {
 }
 
 type Body struct {
-	Data  interface{} `json:"data"`
-	Error error       `json:"error,omitempty"`
+	Data  interface{} `json:"data,omitempty"`
+	Error string      `json:"error,omitempty"`
 }
 
 func (r *JsonReponse) WriteHeader(w http.ResponseWriter) {
-	w.WriteHeader(r.Code)
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(r.Code)
 }
 
 func (r *JsonReponse) WriteBody(w http.ResponseWriter) {
@@ -48,7 +50,7 @@ func Error(code int, err error) *JsonReponse {
 	return &JsonReponse{
 		Code: code,
 		Body: Body{
-			Error: err,
+			Error: err.Error(),
 		},
 	}
 }

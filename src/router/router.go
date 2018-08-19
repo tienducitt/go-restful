@@ -26,6 +26,8 @@ func (r Router) Route() http.Handler {
 
 	router.HandleFunc("/users", mwChain(handler.MakeHandler(userHandler.GetAll))).Methods("GET")
 	router.HandleFunc("/users", mwChain(handler.MakeHandler(userHandler.Create))).Methods("POST")
+	router.HandleFunc("/users/{id}", mwChain(handler.MakeHandler(userHandler.Update))).Methods("PUT")
+	router.HandleFunc("/users/{id}", mwChain(handler.MakeHandler(userHandler.Delete))).Methods("DELETE")
 
 	return router
 }

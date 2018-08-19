@@ -19,8 +19,10 @@ func (r *UserRepository) GetAll() (users []model.User, err error) {
 }
 
 func (r *UserRepository) Get(id int64) (user *model.User, err error) {
-	user.ID = id
-	err = r.db.First(&user).Error
+	user = &model.User{}
+	if err = r.db.First(user, id).Error; gorm.IsRecordNotFoundError(err) {
+		return nil, nil
+	}
 	return
 }
 
